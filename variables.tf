@@ -53,6 +53,10 @@ variable "image_url" {
   type = string
 }
 
+variable "service_account_name" {
+  default = ""
+}
+
 variable "requests" {
   type = object({
     memory = string

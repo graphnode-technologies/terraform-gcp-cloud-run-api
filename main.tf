@@ -13,7 +13,7 @@ resource "google_cloud_run_service" "this" {
       }, var.extra_annotations)
     }
     spec {
-      service_account_name = data.google_compute_default_service_account.default.email
+      service_account_name = var.service_account_name != "" ? service_account_name : data.google_compute_default_service_account.default.email
       containers {
 
         ports {
@@ -60,7 +60,7 @@ resource "google_cloud_scheduler_job" "keep_alive" {
 }
 
 resource "google_cloud_run_domain_mapping" "this" {
-  count = var.domain_name != "" ? 1 : 0
+  count    = var.domain_name != "" ? 1 : 0
   location = var.location
   name     = var.domain_name
 
@@ -82,9 +82,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = google_cloud_run_service.this.location
-  project     = google_cloud_run_service.this.project
-  service     = google_cloud_run_service.this.name
+  location = google_cloud_run_service.this.location
+  project  = google_cloud_run_service.this.project
+  service  = google_cloud_run_service.this.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
