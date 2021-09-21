@@ -13,7 +13,7 @@ resource "google_cloud_run_service" "this" {
       }, var.extra_annotations)
     }
     spec {
-      service_account_name = var.service_account_name != "" ? service_account_name : data.google_compute_default_service_account.default.email
+      service_account_name = var.service_account_name != "" ? var.service_account_name : data.google_compute_default_service_account.default.email
       containers {
 
         ports {
